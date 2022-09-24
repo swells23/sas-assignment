@@ -1,0 +1,36 @@
+[
+    {
+        "description": "Business context for German customers",
+        "externalCode": "BC10011",
+        "id": "bc1",
+        "lastModifiedDate": "Mon Mar 19 14:00:00 EST 2019",
+        "lastPublishedBy": null,
+        "name": "Germany"
+    },
+    {
+        "description": "Business context for Brazilian customers",
+        "externalCode": "BC10012",
+        "id": "bc2",
+        "lastModifiedDate": "Mon Mar 19 14:00:00 EST 2019",
+        "lastPublishedBy": null,
+        "name": "Brazil"
+    },
+    {
+        "description": "Business context for Canadian customers",
+        "externalCode": "BC10013",
+        "id": "bc3",
+        "infoMap": "/local/orion/data",
+        "lastModifiedDate": "Mon Mar 19 14:00:00 EST 2019",
+        "lastPublishedBy": null,
+        "name": "BC info map not editable"
+    },
+    {
+        "description": "Business context for Romanian customers",
+        "externalCode": "BC10014",
+        "id": "bc4",
+        "infoMap": "/local/orion/data",
+        "lastModifiedDate": "Mon Mar 19 14:00:00 EST 2019",
+        "lastPublishedBy": null,
+        "name": "BC2 info map not editable"
+    }
+]
