@@ -4,14 +4,29 @@ import data from '../../../data/mock-data.json';
 import { ManageBusinessContextForm, ManageBusinessContextTable } from '../';
 
 const ManageBusinessContext = () => {
-    const [businessContextData, setBusinessContextData] = useState(data);
+    const dataMap = new Map(data.map(item => [item.id, item])),
+        [businessContextData, setBusinessContextData] = useState(dataMap),
+        [selectedRecords, setSelectedRecords] = useState(new Set()),
+        [form, setForm] = useState(null);
 
     return (
         <Container>
             <Typography variant='h5'>Manage Business Contexts</Typography>
             <Typography variant='h6'>Create or modify a business context.</Typography>
-            <ManageBusinessContextForm data={businessContextData} setData={setBusinessContextData} />
-            <ManageBusinessContextTable data={businessContextData} />
+            {(form === 'add' || form === 'edit') && (<ManageBusinessContextForm
+                data={businessContextData}
+                setData={setBusinessContextData}
+                selectedRecords={selectedRecords}
+                form={form}
+            />)}
+            < ManageBusinessContextTable
+                data={businessContextData}
+                setData={setBusinessContextData}
+                selectedRecords={selectedRecords}
+                setSelectedRecords={setSelectedRecords}
+                form={form}
+                setForm={setForm}
+            />
         </Container>
     );
 };
