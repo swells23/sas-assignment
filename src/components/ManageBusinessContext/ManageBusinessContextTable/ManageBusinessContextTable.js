@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import { BUSINESS_CONTEXT_COLUMNS } from '../../../data/templateMeta';
 
-const ManageBusinessContextTable = ({ data, setData, selectedRecords, setSelectedRecords, form, setForm }) => {
+const ManageBusinessContextTable = ({ data, filteredData, setData, selectedRecords, setSelectedRecords, form, setForm }) => {
     const selectedRecordsSet = new Set(selectedRecords);
 
     const renderTableHeaders = () => {
@@ -26,9 +26,10 @@ const ManageBusinessContextTable = ({ data, setData, selectedRecords, setSelecte
     }
 
     const renderTableRows = () => {
-        const renderList = [];
+        const renderList = [],
+            verifiedData = filteredData || data;
 
-        data.forEach(item => {
+        verifiedData.forEach(item => {
             const tableCells = [];
 
             for (const property in BUSINESS_CONTEXT_COLUMNS) {
@@ -50,8 +51,6 @@ const ManageBusinessContextTable = ({ data, setData, selectedRecords, setSelecte
 
     const handleSelectRecord = (id, evt) => {
         evt.target.checked ? selectedRecordsSet.add(id) : selectedRecordsSet.delete(id);
-        console.log(selectedRecordsSet)
-        console.log(selectedRecords)
         setSelectedRecords(selectedRecordsSet);
     }
 

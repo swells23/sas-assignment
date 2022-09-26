@@ -1,13 +1,14 @@
 import { Container, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import data from '../../../data/mock-data.json';
-import { ManageBusinessContextForm, ManageBusinessContextTable } from '../';
+import { ManageBusinessContextFilter, ManageBusinessContextForm, ManageBusinessContextTable } from '../';
 
 const ManageBusinessContext = () => {
     const dataMap = new Map(data.map(item => [item.id, item])),
         [businessContextData, setBusinessContextData] = useState(dataMap),
         [selectedRecords, setSelectedRecords] = useState(new Set()),
-        [form, setForm] = useState(null);
+        [form, setForm] = useState(null),
+        [filteredData, setFilteredData] = useState(null);
 
     return (
         <Container>
@@ -19,9 +20,11 @@ const ManageBusinessContext = () => {
                 selectedRecords={selectedRecords}
                 form={form}
             />)}
-            < ManageBusinessContextTable
+            <ManageBusinessContextFilter data={businessContextData} setFilteredData={setFilteredData} />
+            <ManageBusinessContextTable
                 data={businessContextData}
                 setData={setBusinessContextData}
+                filteredData={filteredData}
                 selectedRecords={selectedRecords}
                 setSelectedRecords={setSelectedRecords}
                 form={form}
