@@ -1,38 +1,52 @@
-import { Button, TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
+import FilterAltOutlined from '@mui/icons-material/FilterAltOutlined';
 import React, { useRef } from 'react';
+import styles from './ManageBusinessContextFilter.styles';
 
 const ManageBusinessContextFilter = ({ data, setFilteredData }) => {
     const filterInput = useRef(null);
 
-    const handleFilter = () => {
-        const value = filterInput?.current.value,
-            filteredData = new Map();
+    const handleFilter = (evt) => {
+        if (evt.type === 'keyup' && evt.key !== 'Enter')
+            return;
+        else {
+            const value = filterInput?.current.value,
+                filteredData = new Map();
 
-        if (!value) {
-            setFilteredData(null);
-        } else {
-            for (const item of data.values()) {
-                if (item.name.includes(value) ||
-                    item.description.includes(value) ||
-                    item.externalCode.includes(value) ||
-                    item.lastModifiedDate.includes(value)) {
-                    filteredData.set(item.id, item);
+            if (!value) {
+                setFilteredData(null);
+            } else {
+                for (const item of data.values()) {
+                    if (item.name.includes(value) ||
+                        item.description.includes(value) ||
+                        item.externalCode.includes(value) ||
+                        item.lastModifiedDate.includes(value)) {
+                        filteredData.set(item.id, item);
+                    }
                 }
+                setFilteredData(filteredData);
             }
-            setFilteredData(filteredData);
         }
     }
 
     return (
-        <div>
+        <Grid sx={styles.root}>
             <TextField
+                aria-label='filter'
                 id='bc-filter'
                 name='filter'
                 placeholder='Filter'
                 inputRef={filterInput}
+                size='small'
+                onKeyUp={handleFilter}
             />
-            <Button onClick={handleFilter}>Filter</Button>
-        </div>
+            <FilterAltOutlined
+                aria-label='filter-submit'
+                sx={styles.filterBtn}
+                fontSize='large'
+                onClick={handleFilter}
+            />
+        </Grid>
     );
 };
 

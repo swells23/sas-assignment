@@ -1,25 +1,42 @@
 import {
-    Button,
     Checkbox,
+    Grid,
     Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
+    Typography
 } from '@mui/material';
+import { DeleteOutlined, EditOutlined, PostAddOutlined } from '@mui/icons-material';
 import React from 'react';
 import { BUSINESS_CONTEXT_COLUMNS } from '../../../data/templateMeta';
+import styles from './ManageBusinessContextTable.styles';
 
-const ManageBusinessContextTable = ({ data, filteredData, setData, selectedRecords, setSelectedRecords, form, setForm }) => {
+const ManageBusinessContextTable = ({
+    children,
+    data,
+    filteredData,
+    setData,
+    selectedRecords,
+    setSelectedRecords,
+    form,
+    setForm
+}) => {
     const selectedRecordsSet = new Set(selectedRecords);
 
     const renderTableHeaders = () => {
         const renderList = [];
 
         for (const property in BUSINESS_CONTEXT_COLUMNS) {
-            renderList.push(<TableCell>{BUSINESS_CONTEXT_COLUMNS[property]}</TableCell>);
+            renderList.push(
+                <TableCell key={`header-${property}`}>
+                    <Typography sx={styles.tableHeaders}>
+                        {BUSINESS_CONTEXT_COLUMNS[property]}
+                    </Typography>
+                </TableCell>);
         };
 
         return renderList;
@@ -29,17 +46,24 @@ const ManageBusinessContextTable = ({ data, filteredData, setData, selectedRecor
         const renderList = [],
             verifiedData = filteredData || data;
 
+        if (verifiedData.size === 0) {
+            return <TableRow>NO RESULTS FOUND</TableRow>;
+        }
+
         verifiedData.forEach(item => {
             const tableCells = [];
 
             for (const property in BUSINESS_CONTEXT_COLUMNS) {
-                tableCells.push(<TableCell key={item[property]}>{item[property]}</TableCell>)
+                tableCells.push(
+                    <TableCell key={item[property]}>
+                        {item[property]}
+                    </TableCell>)
             }
 
             renderList.push(
                 <TableRow>
                     <TableCell>
-                        <Checkbox onChange={(evt) => handleSelectRecord(item.id, evt)} />
+                        <Checkbox aria-label='select record' onChange={(evt) => handleSelectRecord(item.id, evt)} />
                     </TableCell>
                     {tableCells}
                 </TableRow>
@@ -75,24 +99,31 @@ const ManageBusinessContextTable = ({ data, filteredData, setData, selectedRecor
     }
 
     return (
-        <TableContainer component={Paper}>
-            <Button onClick={showAddRecordForm}>Add</Button>
-            <Button onClick={showEditRecordForm}>Edit</Button>
-            <Button onClick={deleteRecord}>Delete</Button>
-            <Table sx={{ minWidth: 650 }} aria-label='business contexts'>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>
-                            <Checkbox />
-                        </TableCell>
-                        {renderTableHeaders()}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {renderTableRows()}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <>
+            <Grid container sx={styles.tableControls}>
+                <Grid item xs={10}>{children}</Grid>
+                <Grid item sx={styles.tableBtnWrapper} xs={2}>
+                    <PostAddOutlined aria-label='add record' sx={styles.tableBtn} onClick={showAddRecordForm} />
+                    <EditOutlined aria-label='edit record' sx={styles.tableBtn} onClick={showEditRecordForm} />
+                    <DeleteOutlined aria-label='delete record' sx={styles.tableBtn} onClick={deleteRecord} />
+                </Grid>
+            </Grid>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 700 }} aria-label='business contexts'>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>
+                                <Checkbox />
+                            </TableCell>
+                            {renderTableHeaders()}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {renderTableRows()}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </>
     );
 };
 
